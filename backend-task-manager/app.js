@@ -12,6 +12,11 @@ const cors = require('cors');
 
 const app = express();
 
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+
 // connect to Mondodb
 const PORT = process.env.PORT || 5000;
 
@@ -31,12 +36,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+    console.log(req.method, req.path);
+    next();
+});
 // -routes----------------------------
-app.use(cors({
-    origin: 'http://localhost:5173', // your Vite dev server
-    credentials: true
-}));
-
 // JWT authentication routes
 // handle errors
 const handleErrors = (err) =>{
